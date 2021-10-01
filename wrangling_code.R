@@ -22,13 +22,10 @@ une_gather$year <- as.numeric(str_sub(une_gather$name, start = 2, end = 5))
 une_gather <- select(une_gather, -name)
 
 #CREATE DECADE VARIABLE AND GROUP
-une_gather$decade <- une_gather$year - une_gather$year %% 10
+une_gather$decade <- as.factor(une_gather$year - une_gather$year %% 10)
 une_dec <- une_gather %>%
   group_by(decade, country) %>%
   summarise(mean_une=(mean(une_rate)))
-
-#SELECT COUNTRIES WITH AT LEAST TWO DECADES OF DATA
-une_dup <- une_dec[duplicated(une_dec$country) | duplicated(une_dec$country, fromLast=TRUE), ]
 
 
 #PROCESS LITERACY RATES
@@ -40,13 +37,10 @@ lit_gather$year <- as.numeric(str_sub(lit_gather$name, start = 2, end = 5))
 lit_gather <- select(lit_gather, -name)
 
 #CREATE DECADE VARIABLE AND GROUP
-lit_gather$decade <- lit_gather$year - lit_gather$year %% 10
+lit_gather$decade <- as.factor(lit_gather$year - lit_gather$year %% 10)
 lit_dec <- lit_gather %>%
   group_by(decade, country) %>%
   summarise(mean_lit=(mean(lit_rate)))
-
-#SELECT COUNTRIES WITH AT LEAST TWO DECADES OF DATA
-lit_dup <- lit_dec[duplicated(lit_dec$country) | duplicated(lit_dec$country, fromLast=TRUE), ]
 
 
 #PROCESS POVERTY DATA
@@ -59,11 +53,15 @@ pov_gather$year <- as.numeric(str_sub(pov_gather$name, start = 2, end = 5))
 pov_gather<- select(pov_gather, -name)   
 
 #CREATE DECADE VARIABLE AND GROUP
-pov_gather$decade <- pov_gather$year - pov_gather$year %% 10
+pov_gather$decade <-as.factor(pov_gather$year - pov_gather$year %% 10)
+
 pov_dec <- pov_gather %>%
     group_by(decade, country) %>%
     summarise(mean_pov=(mean(pov_rate)))
 
-#SELECT COUNTRIES WITH AT LEAST TWO DECADES OF DATA
-pov_dup <- pov_dec[duplicated(pov_dec$country) | duplicated(pov_dec$country, fromLast=TRUE), ]
 
+rm("une_perr")
+rm("lit_rate")
+rm("pov_per")
+
+join <- inner_join(pov_dec,une_dec)
