@@ -10,23 +10,6 @@ library(stringr)
 #IMPORT DATA
 lit_rate <- read.csv("literacy_rate_adult_total_percent_of_people_ages_15_and_above.csv",fileEncoding = "UTF-8-BOM")
 pov_per <- read.csv("poverty_percent_people_below_550_a_day.csv",fileEncoding = "UTF-8-BOM")
-une_perr <- read.csv("long_term_unemployment_rate_percent.csv",fileEncoding = "UTF-8-BOM")
-
-
-#PROCESS LITERACY RATES
-#MAKE TIDY
-# une_gather <- (une_perr %>% pivot_longer(cols=c('X1989':'X2016'), 
-#                                          values_to = "une_rate", 
-#                                          values_drop_na = TRUE)) 
-# une_gather$year <- as.numeric(str_sub(une_gather$name, start = 2, end = 5))
-# une_gather <- select(une_gather, -name)
-# 
-# #CREATE DECADE VARIABLE AND GROUP
-# une_gather$decade <- as.factor(une_gather$year - une_gather$year %% 10)
-# une_dec <- une_gather %>%
-#   group_by(decade, country) %>%
-#   summarise(mean_une=(mean(une_rate)))
-
 
 #PROCESS LITERACY RATES
 #MAKE TIDY
@@ -62,27 +45,4 @@ pov_dec <- pov_gather %>%
 rm("lit_rate")
 rm("pov_per")
 
-#rm("pov_tbl"); rm("lit_tbl")
-
 jn <- inner_join(lit_gather,pov_gather)
-jn_dec <- inner_join(lit_dec,pov_dec)
-jn_dec$decade2 <- jn_dec$decade
-jn_tbl <- data.frame(table(jn_dec$country))
-jn_countries <- jn_tbl[jn_tbl$Freq>=3,"Var1"]
-
-jn <- jn[jn$country %in% jn_countries,]
-jn_dec <- jn_dec[jn_dec$country %in% jn_countries,] %>% 
-        pivot_wider(
-          names_from = decade,
-          names_prefix = "lit_",
-          values_from = mean_lit) %>% 
-        pivot_wider(
-           names_from = decade2,
-           names_prefix = "pov_",
-           values_from = mean_pov) %>%
-        group_by(country) 
-
-
-
-#rm("jn_tbl")
-#rm("jn_countries")
