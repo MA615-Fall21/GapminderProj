@@ -46,3 +46,4 @@ rm("lit_rate")
 rm("pov_per")
 
 jn <- inner_join(lit_gather,pov_gather)
+

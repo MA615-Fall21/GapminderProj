@@ -12,7 +12,7 @@ library(plotly)
 library(tidyverse)
 library(htmlwidgets)
 
-#esquisser(data = jn, viewer = "browser")
+#esquisser(data = lit_dec, viewer = "browser")
 
 
 rates_scatter <- function(data){
@@ -37,11 +37,16 @@ rates_scatter <- function(data){
     ggplotly(plt,tooltip = "text")
 }
 
-#rates_violin(jn, lit_rate)
-rates_violin <- function(data, rate){
-  ggplot(jn) +
-    aes(x = decade, y = rate) +
+#rates_violin(lit_dec)
+rates_violin <- function(data){
+  ggplot(data) +
+    aes(x = decade, y = mean_lit) +
     geom_violin(adjust = 1L, scale = "area", fill = "#112446") +
+    labs(
+      x = "Decade",
+      y = "Literacy Rate",
+      title = "Density of Literacy Rates by Decade"
+    ) +
     theme_minimal()
 }
 
