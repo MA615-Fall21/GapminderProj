@@ -5,14 +5,46 @@
 # visualization ).  This should be saved in an .R script named something like, 
 # “visualization_function.R”
 
-install.packages("esquisse")
+#install.packages("esquisse")
 library(esquisse)
 
-temp <- inner_join(une_gather,lit_gather)
-#esquisser(data = temp, viewer = "browser")
+library(plotly)
+library(tidyverse)
+library(htmlwidgets)
+
+#esquisser(data = jn, viewer = "browser")
 
 
-ggplot(all) +
-  aes(x = mean_pov, y = mean_lit) +
-  geom_point(shape = "circle", size = 1.5, colour = "#112446") +
-  theme_minimal()
+rates_scatter <- function(data){
+    plt <- ggplot(data) +
+      aes(x = lit_rate, y = pov_rate,
+          text = paste(
+        "Country: ", country, "\n",
+        "Year: ", year, "\n",
+        "Literacy Rate: ", lit_rate, "\n",
+        "Poverty Rate: ", pov_rate, "\n",
+        sep = ""
+      ),
+      fill = decade) +
+      geom_point(shape = "circle", size = 1.5, colour = "#112446", stroke = .1, alpha = 0.75) +
+      labs(
+        x = "Literacy Rate",
+        y = "Poverty Rate",
+        title = "Literacy Rate vs Poverty Rate"
+      ) + 
+      scale_fill_brewer(palette = "Greys", direction = 1)+
+      theme_minimal()
+    ggplotly(plt,tooltip = "text")
+}
+
+#rates_violin(jn, lit_rate)
+rates_violin <- function(data, rate){
+  ggplot(jn) +
+    aes(x = decade, y = rate) +
+    geom_violin(adjust = 1L, scale = "area", fill = "#112446") +
+    theme_minimal()
+}
+
+
+
+
