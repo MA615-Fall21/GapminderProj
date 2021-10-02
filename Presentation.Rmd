@@ -51,6 +51,6 @@ with literacy rates above 75% have poverty rates that are spread from over 95%
 of individuals living in extreme poverty to a poverty rate of less than 1%. 
 
 
-```{r, echo=FALSE}
+```{r, echo=FALSE,fig.width=10,fig.height=6.5}
 rates_scatter(jn)
 ```
