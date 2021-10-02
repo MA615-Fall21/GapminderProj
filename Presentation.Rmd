@@ -10,27 +10,47 @@ knitr::opts_chunk$set(echo = TRUE)
 source("wrangling_code.R")
 source("visualization_function.R")
 ```
-# Assignment description
-1. describe your interesting observation seen within two subgroups of your data  
-(think dplyr:filter() or maybe dplyr::group_by() and dplyr::summarise() )  
-2. present your two comparative visualizations  
-3. source the “wrangling_code.R” and the “visualization_function.R”  
-4. will not display any visible code.   
 
 I chose to examine **literacy rates and poverty rates** from the
-[gapminder dataset](https://www.gapminder.org/data/). 
-# Literacy Rates
+[gapminder dataset](https://www.gapminder.org/data/).    
+
+**Literacy Rates:**  
 Gapminder defines literacy rate as the percentage of people ages 15 and above 
 who can, with understanding, read and write a short, simple statement on their 
 everyday life. This dataset, sourced from UNESCO,  includes data from 1974 to 
-2010.
+2010.  
 
-# Poverty Rates 
+**Poverty Rates:**  
 Gapminder defines extreme poverty as the percent of people who have less than 
 $5.50 per day. This dataset, sourced from the World Bank, contains data from 
 1966 to 2018. 
 
 # 1. Literacy Rates by Decade
+When looking at literacy rates grouped by decade, it is clear that countries are
+becoming more literate, since the plots are moving further away from zero, and 
+the density is becoming more clustered between a literacy rate between 90% and 
+100%. This trend could be, in part, an artifact of the data, since each country 
+is not represented in each decade, and the decade of 2000 has nearly twice the 
+number of data points as any other decade. This trend that countries are 
+becoming more literate could be investigated with more data and analysis further
+to confirm its validity. 
 ```{r, echo=FALSE}
-rates_violin(lit_dec)
+rates_violin(lit_gather)
+```
+
+# 2. Comparing Literacy Rates and Poverty Rates
+Figure 2 compares a country's literacy rate with its poverty rate in a given 
+year, and points are colored based on their region (note: the plot is 
+interactive, so you can hover over a point to see more information). As we might
+expect, European countries dominate the high literacy, low poverty region of the figure,while African countries are spread in the low literacy, high poverty 
+region. In addition to Europe and Africa, each other region is grouped together, 
+so, for example, most South American countries are other South American countries on the plot.   
+One interesting pattern is that countries with a literacy rate below about 75% 
+almost always have a poverty rate that is above 75%. In contrast, countries
+with literacy rates above 75% have poverty rates that are spread from over 95% 
+of individuals living in extreme poverty to a poverty rate of less than 1%. 
+
+
+```{r, echo=FALSE}
+rates_scatter(jn)
 ```
