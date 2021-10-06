@@ -1,0 +1,102 @@
+---
+title: "explanation"
+author: "Rose Determan"
+date: "10/6/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("wrangling_code.R")
+source("visualization_function.R")
+```
+
+
+# Wrangling Code Blocks
+## 1. Import necessary packages
+```
+library(tidyr)
+library(dplyr)
+library(stringr)
+library(reshape2)
+```
+
+## 2. Import the literacy rate data and begin processing   
+I created a list of unique countries in the lit_rate dataframe and classified 
+them into regions. I've included only a few of the country region mapping values
+since the vectors are rather long. 
+from = country names; to = region names
+```
+lit_rate <- read.csv("literacy_rate_adult_total_percent_of_people_ages_15_and_above.csv",
+                      fileEncoding = "UTF-8-BOM")
+from <- c("Aruba","Afghanistan","Angola",..."Zambia","Zimbabwe")
+to <- c("Caribbean & Central Amer.","Middle East",..."Africa","Africa")
+
+#create a new column to put the regions
+lit_rate$Region <- lit_rate$country
+
+#use mapvalues to map the to values onto the from values
+lit_rate$Region <- plyr::mapvalues(lit_rate$Region, from = from, to = to)
+
+```
+
+## 3. Repeat the import process for poverty data
+
+## 4. Begin "tidying" the literacy rates
+```{r}
+lit_rate[sample(nrow(lit_rate), 5), 1:10]
+```
+Use the ```pivot_longer``` function. As shown in the sample above, the data set is not 
+formatted in a "tidy" manner. The first step I took was to take the columns
+names (1974, 1975, etc. ) and make those years into their own column. 
+```
+#create a new var called lit_gather. Pass the lit_rate dataframe to the 
+pivot_longer command. Use the year columns as the columns to target, and we want
+the new column to be called lit_rate. 
+lit_gather <- (lit_rate %>% pivot_longer(cols=c('X1974':'X2010'), 
+                                         values_to = "lit_rate", 
+                                         values_drop_na = TRUE)) 
+#When the data were imported into R the year column names became strings with an 
+X in front. We want this new "names" column that was created from the pivot_longer
+command to have the years rather than string. 
+lit_gather$year <- as.numeric(str_sub(lit_gather$name, start = 2, end = 5))
+lit_gather <- select(lit_gather, -name)
+```
+
+Create a decade variable that is stored as a factor and create a new dataframe
+with countries summarized by decade. Since not every country has data for every
+year, I grouped observations by decade and country. 
+
+```
+#subtract the measured year from the remainder after dividing the year by 10. 
+For example, 2012/10 remainder = 2. 2012-2 = 2010
+lit_gather$decade <- as.factor(lit_gather$year - lit_gather$year %% 10)
+
+#use the group_by and summarise commands to find the mean of each country for
+each decade. 
+lit_dec <- lit_gather %>%
+  group_by(decade, country) %>%
+  summarise(mean_lit=(mean(lit_rate)))
+```
+## 5. Repeat the process for the poverty dataset
+
+## 6. Join the literacy and poverty datasets using the ```inner_join``` command. 
+This allows you to see countries where there is a literacy rate and a poverty 
+rate in the same year. 
+```
+jn <- inner_join(lit_gather,pov_gather)
+```
+# STOPPED HERE
+## 7. Create a long version of the data
+
+```
+lit_long <- melt(lit_gather)
+pov_long <- melt(pov_gather)
+new <- rbind(lit_long, pov_long)
+new <- new[new$variable != "year",]
+unique(new$Region)
+new$Region <- factor(new$Region, levels = c("Europe","North America", "Asia",
+                                            "S. Amer.","Caribbean & Central Amer."
+                                            ,"Oceania","Middle East", "Africa"))
+
+```
