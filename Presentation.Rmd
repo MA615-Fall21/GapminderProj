@@ -37,6 +37,10 @@ to confirm its validity.
 ```{r, echo=FALSE}
 rates_violin(lit_gather)
 ```
+```{r}
+
+```
+
 
 # 2. Comparing Literacy Rates and Poverty Rates
 Figure 2 compares a country's literacy rate with its poverty rate in a given 
