@@ -37,18 +37,16 @@ to confirm its validity.
 ```{r, echo=FALSE}
 rates_violin(lit_gather)
 ```
-```{r}
-
-```
-
 
 # 2. Comparing Literacy Rates and Poverty Rates
 Figure 2 compares a country's literacy rate with its poverty rate in a given 
 year, and points are colored based on their region (note: the plot is 
 interactive, so you can hover over a point to see more information). As we might
-expect, European countries dominate the high literacy, low poverty region of the figure,while African countries are spread in the low literacy, high poverty 
+expect, European countries dominate the high literacy, low poverty region of the
+figure,while African countries are spread in the low literacy, high poverty 
 region. In addition to Europe and Africa, each other region is grouped together, 
-so, for example, most South American countries are other South American countries on the plot.   
+so, for example, most South American countries are other South American countries
+on the plot.   
 One interesting pattern is that countries with a literacy rate below about 75% 
 almost always have a poverty rate that is above 75%. In contrast, countries
 with literacy rates above 75% have poverty rates that are spread from over 95% 
@@ -57,4 +55,10 @@ of individuals living in extreme poverty to a poverty rate of less than 1%.
 
 ```{r, echo=FALSE,fig.width=10,fig.height=6.5}
 rates_scatter(jn)
+```
+
+
+# 3. Another Comparison of Literacy and Poverty Rates
+```{r, echo=FALSE,fig.width=10,fig.height=6.5}
+boxes(new)
 ```

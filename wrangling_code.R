@@ -70,7 +70,7 @@ lit_long <- melt(lit_gather)
 pov_long <- melt(pov_gather)
 new <- rbind(lit_long, pov_long)
 new <- new[new$variable != "year",]
-
-new$Region <- factor(new$Region, levels = c("Europe","North America", "Middle East",
-                                            "S. America","Caribbean & Central Amer.", "Asia", "Africa"))
+unique(new$Region)
+new$Region <- factor(new$Region, levels = c("Europe","North America", "Asia",
+                                            "S. Amer.","Caribbean & Central Amer.","Oceania","Middle East", "Africa"))
 rm("pov_long")

@@ -10,9 +10,9 @@ library(esquisse)
 
 library(plotly)
 library(tidyverse)
-#library(htmlwidgets)
+library(gridExtra)
 
-#esquisser(data = jn, viewer = "browser")
+#esquisser(data = pov_gather, viewer = "browser")
 
 
 rates_scatter <- function(data){
@@ -38,7 +38,6 @@ rates_scatter <- function(data){
     ggplotly(plt,tooltip = "text")
 }
 
-#rates_violin(lit_dec)
 rates_violin <- function(data){
   ggplot(data) +
     aes(x = decade, y = lit_rate) +
@@ -47,15 +46,22 @@ rates_violin <- function(data){
       x = "Decade",
       y = "Literacy Rate",
       title = "Figure 1: Density of Literacy Rates by Decade",
-      caption = "Source: UNESCO Institute of Statistics (UIS) through www.gapminder.org",
+      caption = "Source: UNESCO Institute of Statistics (UIS) and UNESCO Institute of Statistics (UIS) through www.gapminder.org",
     ) +
     theme_minimal()
 }
 
-density_plts <- function(data){
-  ggplot(data=data, aes(x=pov_rate, fill=Region)) +
-    geom_density(alpha=0.3)
-  
+#MUtATE VARs SO ThEY're IN ORDDER
+#SUPRESS WARNINGS
+
+
+boxes <- function(new){
+    ggplot(new, aes(x=Region,y=value, fill=variable))+
+    #geom_jitter(color="gray", size=0.5, alpha=0.5)+
+    geom_boxplot() + 
+                  labs(x = "Region",
+                       y = "Rate",
+                       title="Figure 3: Literacy Rate and Poverty by Region",
+                       caption = "Source: World Bank, Development Research Group and UNESCO Institute of Statistics (UIS) through www.gapminder.org") +
+      scale_fill_discrete(name = "Rate", labels = c("Literacy", "Poverty")) 
 }
-
-
