@@ -25,7 +25,7 @@ rates_violin <- function(data){
 }
 
 rates_scatter <- function(data){
-  #knitr::opts_chunk$set(fig.width = 20,fig.height = 4)
+  
   plt <-  ggplot(jn) +
     aes(x = lit_rate, y = pov_rate, colour = Region,
         text = paste(
@@ -51,7 +51,6 @@ rates_scatter <- function(data){
 
 boxes <- function(new){
     ggplot(new, aes(x=Region,y=value, fill=variable))+
-    #geom_jitter(color="gray", size=0.5, alpha=0.5)+
     geom_boxplot() + 
                   labs(x = "Region",
                        y = "Rate",

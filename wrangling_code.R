@@ -5,7 +5,7 @@
 library(tidyr)
 library(dplyr)
 library(stringr)
-
+library(reshape2)
 
 #IMPORT DATA
 lit_rate <- read.csv("literacy_rate_adult_total_percent_of_people_ages_15_and_above.csv",fileEncoding = "UTF-8-BOM")
@@ -57,13 +57,9 @@ pov_dec <- pov_gather %>%
 
 #JOIN DATA
 jn <- inner_join(lit_gather,pov_gather)
-#jn$Region <- jn$country
-#jn$Region <- plyr::mapvalues(jn$Region, from=c("Albania","Argentina","Armenia","Burkina Faso","Bangladesh","Bulgaria","Bosnia and Herzegovina","Belarus","Bolivia","Brazil","Chile","China","Cote d'Ivoire","Cameroon","Colombia","Costa Rica","Cyprus","Dominican Republic","Ecuador","Egypt","Spain","Estonia","Ethiopia","Georgia","Greece","Honduras","Croatia","Hungary","Indonesia","India","Iran","Italy","Jamaica","Jordan","Kazakhstan","Kyrgyz Republic","Liberia","Sri Lanka","Lithuania","Latvia","Moldova","Mexico","North Macedonia","Mali","Mongolia","Mauritania","Malawi","Niger","Nigeria","Nicaragua","Pakistan","Panama","Peru","Philippines","Poland","Portugal","Paraguay","Palestine","Romania","Russia","Rwanda","Sierra Leone","El Salvador","Slovenia","Eswatini","Chad","Togo","Thailand","Timor-Leste","Tunisia","Turkey","Uganda","Ukraine","Uruguay","Uzbekistan","Venezuela","South Africa","Zambia","Zimbabwe"), 
-#                 to=c("Europe","South America","Asia","Africa","Asia","Europe","Europe","Europe","South America","South America","South America","Asia","Africa","Africa","South America","Caribbean and Central America","Middle East","Caribbean and Central America","South America","Africa","Europe","Europe","Africa","Europe","Europe","Caribbean and Central America","Europe","Europe","Asia","Asia","Middle East","Europe","Caribbean and Central America","Middle East","Asia","Asia","Africa","Asia","Europe","Europe","Europe","North America","Europe","Africa","Asia","Africa","Africa","Africa","Africa","Caribbean and Central America","Middle East","Caribbean and Central America","South America","Asia","Europe","Europe","South America","Middle East","Europe","Asia","Africa","Africa","Caribbean and Central America","Europe","Africa","Africa","Africa","Asia","Asia","Africa","Middle East","Africa","Europe","South America","Asia","South America","Africa","Africa","Africa"))
-
 
 #MAKE LONG DATA
-library(reshape2)
+
 lit_long <- melt(lit_gather)
 pov_long <- melt(pov_gather)
 new <- rbind(lit_long, pov_long)
