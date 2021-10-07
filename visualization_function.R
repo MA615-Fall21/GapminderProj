@@ -5,18 +5,27 @@
 # visualization ).  This should be saved in an .R script named something like, 
 # “visualization_function.R”
 
-#install.packages("esquisse")
 library(esquisse)
-
 library(plotly)
 library(tidyverse)
 library(gridExtra)
 
 #esquisser(data = pov_gather, viewer = "browser")
 
+rates_violin <- function(data){
+    ggplot(data, aes(x = decade, y = lit_rate)) +
+    geom_violin(fill = "#112446") +
+    labs(
+      x = "Decade",
+      y = "Literacy Rate",
+      title = "Figure 1: Density of Literacy Rates by Decade",
+      caption = "Source: UNESCO Institute of Statistics (UIS) through www.gapminder.org",
+    ) +
+    theme_minimal()
+}
 
 rates_scatter <- function(data){
-  knitr::opts_chunk$set(fig.width = 20,fig.height = 4)
+  #knitr::opts_chunk$set(fig.width = 20,fig.height = 4)
   plt <-  ggplot(jn) +
     aes(x = lit_rate, y = pov_rate, colour = Region,
         text = paste(
@@ -38,21 +47,6 @@ rates_scatter <- function(data){
     ggplotly(plt,tooltip = "text")
 }
 
-rates_violin <- function(data){
-  ggplot(data) +
-    aes(x = decade, y = lit_rate) +
-    geom_violin(adjust = 1L, scale = "area", fill = "#112446") +
-    labs(
-      x = "Decade",
-      y = "Literacy Rate",
-      title = "Figure 1: Density of Literacy Rates by Decade",
-      caption = "Source: UNESCO Institute of Statistics (UIS) and UNESCO Institute of Statistics (UIS) through www.gapminder.org",
-    ) +
-    theme_minimal()
-}
-
-#MUtATE VARs SO ThEY're IN ORDDER
-#SUPRESS WARNINGS
 
 
 boxes <- function(new){

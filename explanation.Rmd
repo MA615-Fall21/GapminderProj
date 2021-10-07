@@ -86,17 +86,122 @@ rate in the same year.
 ```
 jn <- inner_join(lit_gather,pov_gather)
 ```
-# STOPPED HERE
-## 7. Create a long version of the data
 
+## 7. Create a long version of the data
+To create a boxplot with literacy and poverty side-by-side, the data need to be 
+in one dataframe. The ```melt``` command takes one column, and makes another 
+"variable" column with the original column name. The new dataframes include the 
+rate and the year.
+Then, create a new dataframe that combines the two "long" dataframes into one, 
+but excludes the rows with information about the year. 
+Create the region column as a factor. The levels are assigned based on the median 
+literacy rate for the region. 
 ```
 lit_long <- melt(lit_gather)
 pov_long <- melt(pov_gather)
 new <- rbind(lit_long, pov_long)
 new <- new[new$variable != "year",]
-unique(new$Region)
-new$Region <- factor(new$Region, levels = c("Europe","North America", "Asia",
-                                            "S. Amer.","Caribbean & Central Amer."
-                                            ,"Oceania","Middle East", "Africa"))
+new$Region <- factor(new$Region, levels=c("Europe","North America", "Asia",
+                                         "S. Amer.","Caribbean & Central Amer."
+                                          ,"Oceania","Middle East", "Africa"))
 
 ```
+
+# Visualization Code Blocks
+## 1. Import necessary packages
+Additionally, the esquisser command is commented out, but it can be used to 
+interactively visualize the data. 
+```
+library(esquisse)
+library(plotly)
+library(tidyverse)
+library(gridExtra)
+
+#esquisser(data = pov_gather, viewer = "browser")
+```
+
+## 2. Figure 1: violin plots
+Pass the lit_gather data since it has information for each data point and is not
+already summarized. 
+```
+rates_violin <- function(data){
+    #create a ggplot with the data passed to the function
+    ggplot(data, aes(x = decade, y = lit_rate) +
+    #add a violon plot and specify fill color
+    geom_violin(fill = "#112446") +
+    #add appropriate axis titles, plot titles, and source i nfo
+    labs(
+      x = "Decade",
+      y = "Literacy Rate",
+      title = "Figure 1: Density of Literacy Rates by Decade",
+      caption = "Source: UNESCO Institute of Statistics through
+      www.gapminder.org",
+    ) +
+    #add theme
+    theme_minimal()
+}
+```
+
+# 3. Figure 2: scatter plot
+Pass the joined dataframe to the function, since there is both a literacy and a
+poverty rate for the same year and country. 
+
+```
+rates_scatter <- function(data){
+  #create a ggplot object from the data passed and call the object plt
+  plt <-  ggplot(data,
+  #set aes and color the points by region
+  #add text for the "hover text" in the final plot
+    aes(x = lit_rate, y = pov_rate, colour = Region,
+        text = paste(
+          "Country: ", country, "\n",
+          "Year: ", year, "\n",
+          "Literacy Rate: ", lit_rate, "\n",
+          "Poverty Rate: ", pov_rate, "\n",
+          sep = ""
+        )) +
+    #plot the points
+    geom_point(shape = "circle", size = 2, alpha = 0.85) +
+    #set the color scale for the points
+    scale_color_brewer(palette = "Dark2", direction = 1) +
+    #add appropriate x and y axis titles, plot title, and data source
+    labs(
+      x = "Literacy Rate",
+      y = "Poverty Rate",
+      title = "Figure 2: Literacy Rate vs Poverty Rate",
+      caption = "Source: World Bank, Development Research Group and UNESCO 
+      Institute of Statistics (UIS) through www.gapminder.org",)+
+    theme_minimal()
+  
+   #use ggplotly to plot the data in an interactive manner
+    ggplotly(plt,tooltip = "text")
+}
+```
+
+
+# 4. Figure 3: region boxplots
+Pass the data called "new" which contains the literacy and poverty data in one
+dataframe. This function outputs boxplots of each region's literacy and poverty 
+rates side by side. 
+```
+boxes <- function(new){
+    #create a ggplot object. value =the proportion of either literacy or poverty 
+    #variable = indicator if data point is a literacy or a poverty point
+    ggplot(new, aes(x=Region,y=value, fill=variable))+
+    #add boxplot geom
+    geom_boxplot() + 
+                  #add appropriate labels, as in the previous plots
+                  labs(x = "Region",
+                       y = "Rate",
+                       title="Figure 3: Literacy Rate and Poverty by Region",
+                       caption = "Source: World Bank, Development Research Group
+                       and UNESCO Institute of Statistics (UIS) through 
+                       www.gapminder.org") +
+      #edit the color scale so the legend shows "Literacy" rather than 
+      #"lit_rate"  and "Poverty" rather than "pov_rate"
+      scale_fill_discrete(name = "Rate", labels = c("Literacy", "Poverty")) 
+}
+
+```
+
+
