@@ -1,0 +1,80 @@
+---
+title: "Global Literacy and Poverty Rates"
+author: "Rose Determan"
+date: "10/8/2021"
+output:
+  revealjs::revealjs_presentation:
+    theme: simple
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("wrangling_code.R")
+source("visualization_function.R")
+```
+<style type="text/css">
+p { text-align: left; }
+</style>
+
+<style>
+    .reveal section h1 {
+    display: inline-block;
+    font-size: 2em;
+    line-height: 1.2em;
+    vertical-align: top;
+  }
+</style>
+
+<style>
+    .reveal section p {
+    font-size: 0.7em;
+    line-height: 1.2em;
+  }
+</style>
+
+<style>
+    .reveal section li {
+    font-size: 0.7em;
+    line-height: 1.0em;
+    vertical-align: top;
+  }
+</style>
+
+# Dataset Introduction
+
+**Literacy Rates:**  the percent of people ages 15 and above 
+who can, with understanding, read and write a short, simple statement on their 
+everyday life  
+  
+**Extreme Poverty Rates:** the percent of people who have less than 
+$5.50 per day
+
+# 1. Literacy Rates by Decade
+- countries are becoming more literate, 
+- perhaps an artifact of the data, since each country is not represented in each decade
+```{r, echo=FALSE,fig.width=9,fig.height=4.5}
+rates_violin(lit_gather)
+```
+
+# 2. Comparison Scatter Plot
+<small>(note: the plot is interactive, so you can hover over a point to see more information)</small>
+
+```{r, echo=FALSE,fig.width=9,fig.height=4.5}
+rates_scatter(jn)
+```
+
+# 2. Comparison Plot Details
+ - European countries dominate the high literacy, low poverty
+ - African countries are spread in the low literacy, high poverty region.
+ - Regions are grouped
+ 
+Countries with a literacy rate below about 75%  almost always have a poverty rate that is above 75%. In contrast, countries with literacy rates above 75% have poverty rates that are spread from over 95% 
+of individuals living in extreme poverty to a poverty rate of less than 1%.
+
+# 3. Comparison Boxplots
+- If a region has a high literacy rate, they the potential to have a low poverty rate. 
+- Again, in regions where there is a high literacy rate, there can still be a high poverty rate.   
+<small>Boxplots are sorted left to right from highest median literacy rate to lowest median literacy rate</small>
+```{r, echo=FALSE,fig.width=9,fig.height=4.5, message =FALSE, warning = FALSE}
+boxes(new)
+```

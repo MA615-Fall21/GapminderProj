@@ -61,10 +61,10 @@ rates_scatter(jn)
 # 3. Another Comparison of Literacy and Poverty Rates
 Figure 3 plots boxplots of a region's literacy rate and its poverty rate across 
 all years for which data were provided. The boxplots are sorted left to right 
-from highest median literacy rate to lowest median literacty rate. This plot 
+from highest median literacy rate to lowest median literacy rate. This plot 
 shows a similar trend as Figure 2. If a region has a high literacy rate, they 
 the potential to have a low poverty rate. Again, we can see that even in regions 
-where there is a high literacy rate, there are stil countries with high poverty 
+where there is a high literacy rate, there are still countries with high poverty 
 rates. 
 ```{r, echo=FALSE,fig.width=10,fig.height=6.5, message =FALSE, warning = FALSE}
 boxes(new)
