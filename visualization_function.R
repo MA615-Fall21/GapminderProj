@@ -21,7 +21,8 @@ rates_violin <- function(data){
       title = "Figure 1: Density of Literacy Rates by Decade",
       caption = "Source: UNESCO Institute of Statistics (UIS) through www.gapminder.org",
     ) +
-    theme_minimal()
+    theme_minimal() + 
+    theme(text = element_text(size=16))
 }
 
 rates_scatter <- function(data){
@@ -42,7 +43,8 @@ rates_scatter <- function(data){
       y = "Poverty Rate",
       title = "Figure 2: Literacy Rate vs Poverty Rate",
       caption = "Source: World Bank, Development Research Group and UNESCO Institute of Statistics (UIS) through www.gapminder.org",)+
-    theme_minimal()
+    theme_minimal() + 
+    theme(text = element_text(size=13))
   
     ggplotly(plt,tooltip = "text")
 }
@@ -56,5 +58,6 @@ boxes <- function(new){
                        y = "Rate",
                        title="Figure 3: Literacy Rate and Poverty by Region",
                        caption = "Source: World Bank, Development Research Group and UNESCO Institute of Statistics (UIS) through www.gapminder.org") +
-      scale_fill_discrete(name = "Rate", labels = c("Literacy", "Poverty")) 
+      scale_fill_discrete(name = "Rate", labels = c("Literacy", "Poverty"))  + 
+    theme(text = element_text(size=13))
 }
